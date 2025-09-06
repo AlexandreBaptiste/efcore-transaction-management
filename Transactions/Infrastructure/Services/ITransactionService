@@ -1,0 +1,6 @@
+namespace Transactions.Infrastructure.Services;
+
+public interface ITransactionService
+{
+    Task<TResult> ExecuteInTransactionAsync<TResult>(Func<DummyContext, Task<TResult>> operation);
+}

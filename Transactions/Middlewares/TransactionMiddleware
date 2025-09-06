@@ -1,0 +1,57 @@
+using System;
+using System.Threading.Tasks;
+using Microsoft.AspNetCore.Http;
+using Microsoft.EntityFrameworkCore;
+
+namespace Transactions.Infrastructure.Middlewares;
+
+public class TransactionMiddleware
+{
+    private readonly RequestDelegate _next;
+
+    public TransactionMiddleware(RequestDelegate next)
+    {
+        _next = next ?? throw new ArgumentNullException(nameof(next));
+    }
+
+    public async Task InvokeAsync(HttpContext context, DbContext dbContext)
+    {
+        if (context == null) throw new ArgumentNullException(nameof(context));
+        if (dbContext == null) throw new ArgumentNullException(nameof(dbContext));
+
+        // Check if the HTTP method is POST, PUT, or PATCH
+        if (context.Request.Method == HttpMethods.Post ||
+            context.Request.Method == HttpMethods.Put ||
+            context.Request.Method == HttpMethods.Patch)
+        {
+            var strategy = dbContext.Database.CreateExecutionStrategy();
+            await strategy.ExecuteAsync(async () =>
+            {
+                await using var transaction = await dbContext.Database.BeginTransactionAsync();
+                try
+                {
+                    await _next(context);
+
+                    if (context.Response.StatusCode >= 200 && context.Response.StatusCode < 300)
+                    {
+                        await transaction.CommitAsync();
+                    }
+                    else
+                    {
+                        await transaction.RollbackAsync();
+                    }
+                }
+                catch
+                {
+                    await transaction.RollbackAsync();
+                    throw;
+                }
+            });
+        }
+        else
+        {
+            // If not POST, PUT, or PATCH, just proceed without a transaction
+            await _next(context);
+        }
+    }
+}

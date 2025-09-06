@@ -1,0 +1,8 @@
+C:\Users\albaptis\Workspace\EFCore.Transactions\Transactions\obj\Debug\net9.0\Transactions.csproj.AssemblyReference.cache
+C:\Users\albaptis\Workspace\EFCore.Transactions\Transactions\obj\Debug\net9.0\Transactions.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\albaptis\Workspace\EFCore.Transactions\Transactions\obj\Debug\net9.0\Transactions.AssemblyInfoInputs.cache
+C:\Users\albaptis\Workspace\EFCore.Transactions\Transactions\obj\Debug\net9.0\Transactions.AssemblyInfo.cs
+C:\Users\albaptis\Workspace\EFCore.Transactions\Transactions\obj\Debug\net9.0\Transactions.csproj.CoreCompileInputs.cache
+C:\Users\albaptis\Workspace\EFCore.Transactions\Transactions\obj\Debug\net9.0\Transactions.MvcApplicationPartsAssemblyInfo.cs
+C:\Users\albaptis\Workspace\EFCore.Transactions\Transactions\obj\Debug\net9.0\Transactions.MvcApplicationPartsAssemblyInfo.cache
+C:\Users\albaptis\Workspace\EFCore.Transactions\Transactions\obj\Debug\net9.0\Transactions.sourcelink.json
