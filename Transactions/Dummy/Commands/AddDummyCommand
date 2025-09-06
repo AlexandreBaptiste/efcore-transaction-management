@@ -1,3 +1,0 @@
-namespace Transactions.Dummy.Commands;
-
-private class AddDummyCommand : IRequest<Guid> { }

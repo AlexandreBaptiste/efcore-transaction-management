@@ -17,6 +17,7 @@ public class TransactionService : ITransactionService
     {
         if (operation == null) throw new ArgumentNullException(nameof(operation));
 
+        // Not working with in memory database
         var strategy = _dbContext.Database.CreateExecutionStrategy();
         return await strategy.ExecuteAsync(async () =>
         {
@@ -24,7 +25,10 @@ public class TransactionService : ITransactionService
             try
             {
                 var result = await operation();
+
+                // Can be ommited if we use UnitOfWork pattern for example and let UnitOfWork handle SaveChanges 
                 await _dbContext.SaveChangesAsync();
+
                 await transaction.CommitAsync();
                 return result;
             }

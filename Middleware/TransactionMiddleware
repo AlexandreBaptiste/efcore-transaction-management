@@ -19,11 +19,11 @@ public class TransactionMiddleware
         if (context == null) throw new ArgumentNullException(nameof(context));
         if (dbContext == null) throw new ArgumentNullException(nameof(dbContext));
 
-        // Check if the HTTP method is POST, PUT, or PATCH
         if (context.Request.Method == HttpMethods.Post ||
             context.Request.Method == HttpMethods.Put ||
             context.Request.Method == HttpMethods.Patch)
         {
+            // Not working with in memory database
             var strategy = dbContext.Database.CreateExecutionStrategy();
             await strategy.ExecuteAsync(async () =>
             {
@@ -32,13 +32,10 @@ public class TransactionMiddleware
                 {
                     await _next(context);
 
+                    // Not 100% confident about this
                     if (context.Response.StatusCode >= 200 && context.Response.StatusCode < 300)
                     {
                         await transaction.CommitAsync();
-                    }
-                    else
-                    {
-                        await transaction.RollbackAsync();
                     }
                 }
                 catch
